@@ -21,8 +21,6 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
-}
-server <- function(input, output, session) {
   output$summary <- renderPrint({
     dataset <- get(input$dataset, "package:datasets")
     summary(dataset)
