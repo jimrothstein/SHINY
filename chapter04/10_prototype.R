@@ -31,6 +31,7 @@ if (F) library(httpgd) # control plots easily
   }
 injuries <- vroom::vroom("../neiss/injuries.tsv.gz")
 injuries
+str(injuries)
 
 
 products <- vroom::vroom("../neiss/products.tsv")
