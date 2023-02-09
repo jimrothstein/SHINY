@@ -12,8 +12,8 @@ library(shiny)
 ui <- fluidPage(
   "Hello, world!"
 )
-
-#  next
+#
+#
 ui <- fluidPage(
   selectInput("dataset", label = "Dataset", choices = ls("package:datasets")),
   verbatimTextOutput("summary"),
