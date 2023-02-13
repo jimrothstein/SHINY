@@ -1,7 +1,6 @@
-# file <- "10_prototype.R"
-
+# file <- "20_polish_tables.R"
 # --------------------------------------------------------------------
-# REF:    Mastering Shiny, Chapter 04.4, ER injuries
+# REF:    Mastering Shiny, Chapter 04.5, ER injuries
 # REF:    https://www.cpsc.gov/Research--Statistics/NEISS-Injury-Data
 #        cribs, shopping cart .... injuries
 #
