@@ -10,6 +10,7 @@ library(dplyr)
 library(ggplot)
 
 
+
 injuries <- vroom::vroom("neiss/injuries.tsv.gz")
 products <- vroom::vroom("neiss/products.tsv")
 population <- vroom::vroom("neiss/population.tsv")
