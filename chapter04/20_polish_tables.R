@@ -21,23 +21,6 @@ library(forcats)
 if (F) library(httpgd) # control plots easily 
 
 
-# ---------------------------------------  options() ---------------------------------------
-# Goal:   fix digits displayed
-
-# few options for printing format
-options() |> length()         #92  (of list)
-options() |> names()
-options() |> names() |> grep(pattern="dig*")
-options()[4]
-
-# sprintf is better, also prettNum()
-sprintf("%e", pi)
-sprintf("%e", pi/10)
-
-
-# for NOW, just divide by 1000 (cases per 1000 people)
-
-# ------------------------------------------------------------------------------
 
 
 
