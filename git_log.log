@@ -1,0 +1,20 @@
+[master 530a1b9] wip
+ 18 files changed, 161 insertions(+)
+ create mode 100644 .Rhistory
+ create mode 100644 .Rproj.user/260A24D9/pcs/files-pane.pper
+ create mode 100644 .Rproj.user/260A24D9/pcs/source-pane.pper
+ create mode 100644 .Rproj.user/260A24D9/pcs/windowlayoutstate.pper
+ create mode 100644 .Rproj.user/260A24D9/pcs/workbench-pane.pper
+ create mode 100644 .Rproj.user/260A24D9/rmd-outputs
+ create mode 100644 .Rproj.user/260A24D9/saved_source_markers
+ create mode 100644 .Rproj.user/260A24D9/sources/prop/0EFC97AE
+ create mode 100644 .Rproj.user/260A24D9/sources/prop/47B3FBF0
+ create mode 100644 .Rproj.user/260A24D9/sources/prop/542C6C40
+ create mode 100644 .Rproj.user/260A24D9/sources/prop/D173AA43
+ create mode 100644 .Rproj.user/260A24D9/sources/prop/DD0D6A9A
+ create mode 100644 .Rproj.user/260A24D9/sources/prop/INDEX
+ create mode 100644 .Rproj.user/260A24D9/viewer-cache/completion_popup_dataframe.Rdata
+ create mode 100644 .Rproj.user/shared/notebooks/patch-chunk-names
+ create mode 100644 .Rproj.user/shared/notebooks/paths
+ create mode 100644 Schmuller_BOOK/UniformRandom/app.R
+ create mode 100644 Schmuller_BOOK/UniformRandom/shiny_default_app.R
