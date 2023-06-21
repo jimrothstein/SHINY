@@ -1,6 +1,8 @@
 library(shiny)
 library(ggplot2)
 
+##  Works - Static
+##
 ##   consumer of reactiveexpressions  + outputs 
 ##   producer:   inputs + reactive expressions 
 freqpoly <- function(x1, x2, binwidth = 0.1, xlim = c(-3, 3)) {
@@ -15,15 +17,6 @@ freqpoly <- function(x1, x2, binwidth = 0.1, xlim = c(-3, 3)) {
     coord_cartesian(xlim = xlim)
 }
 
-{
-#runu
-x1 <- rnorm(100, mean = 0, sd = 0.5)
-x2 <- rnorm(200, mean = 0.15, sd = 0.9)
-
-freqpoly(x1, x2)
-cat(t_test(x1, x2))
-}
-
 t_test <- function(x1, x2) {
   test <- t.test(x1, x2)
   
@@ -34,6 +27,13 @@ t_test <- function(x1, x2) {
     test$p.value, test$conf.int[1], test$conf.int[2]
   ))
 }
-t_test(x1, x2)
-shinyApp(ui, server)
+
+{
+x1 <- rnorm(100, mean = 0, sd = 0.5)
+x2 <- rnorm(200, mean = 0.15, sd = 0.9)
+
+freqpoly(x1, x2)
+cat(t_test(x1, x2))
+}
+
 # --------------------
