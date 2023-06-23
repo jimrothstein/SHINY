@@ -37,25 +37,14 @@ if (F) library(httpgd) # control plots easily
   download("population.tsv")
   download("products.tsv")
   }
-injuries <- vroom::vroom("../neiss/injuries.tsv.gz")
-injuries
 
+##  if already downloaded:
+injuries <- vroom::vroom("injuries.tsv.gz")
+head(injuries, n=3)
 
-products <- vroom::vroom("../neiss/products.tsv")
-products
-#> # A tibble: 38 × 2
-#>   prod_code title                            
-#>       <dbl> <chr>                            
-#> 1       464 knives, not elsewhere classified 
-#> 2       474 tableware and accessories        
-#> 3       604 desks, chests, bureaus or buffets
-#> 4       611 bathtubs or showers              
-#> 5       649 toilets                          
-#> 6       676 rugs or carpets, not specified   
-#> # … with 32 more rows
+products <- vroom::vroom("products.tsv")
+population <- vroom::vroom("population.tsv")
 
-population <- vroom::vroom("../neiss/population.tsv")
-population
 
 nrow(injuries)  
 
@@ -64,66 +53,53 @@ nrow(injuries)
 ##  item 6 is all all "other"
 ##  fct_* must convert diag frm char to factor   (I like data.table!)
 injuries %>%
-  mutate(diag = fct_lump_n(fct_infreq(diag), n = 5)) %>%      ##  `in order of freq`, 
+  mutate(diag = forcats::fct_lump_n(fct_infreq(diag), n = 5)) %>%      ##  `in order of freq`, 
   group_by(diag) %>%
   summarise(n = as.integer(sum(weight)/1000))           # /1000 cases per 1000 people
 
+# ------------------------------
 library(data.table)
 dt  <- as.data.table(injuries)
 dt
-x  <- dt[, list(diag,sex)]
-x
-dt[, by=diag, .N][
+##  x  <- dt[, list(diag,sex)]
+dt[, by=diag, .N][order(-N)]
+# ------------------------------
 
+                                       ## injuries (by toliet) 
+dt[prod_code==649,  .N] # [1] 2993
+dt[prod_code==649, by=diag, .N][order(-N)]
 
+# ------------------------------
 
-# ---------------------------- LEGACY ------------------------------
-# numeric[]
-prod_codes <- setNames(products$prod_code, products$title)
+##  What is `weight` ? STUCK 
+## 
+dt[, .(diag,location, body_part,   weight)]
+## by location
+dt[, by=.(location, body_part, diag, weight), .(location, body_part, diag, weight)]
+# ------------------------------
+#
+# ------------------------------
+## PRELIM:   before SHINY
+# ------------------------------
+selected <- injuries |> dplyr::filter(prod_code == 649) #toilet 
 
-ui <- fluidPage(
-  fluidRow(
-    column(6,
-      selectInput("code", "Product", choices = prod_codes)
-    )
-  ),
-  fluidRow(
-    column(4, tableOutput("diag")),
-    column(4, tableOutput("body_part")),
-    column(4, tableOutput("location"))
-  ),
-  fluidRow(
-    column(12, plotOutput("age_sex"))
-  )
-)
+##
+summary <- selected %>% 
+  count(age, sex, wt = weight)
+summary
+#> # A tibble: 208 × 3
+#>     age sex         n
+#>   <dbl> <chr>   <dbl>
+#> 1     0 female   4.76
+#> 2     0 male    14.3 
+#> 3     1 female 253.  
+#> 4     1 male   231.  
+#> 5     2 female 438.  
+#> 6     2 male   632.  
+#> # … with 202 more rows
 
-server <- function(input, output, session) {
+summary %>% 
+  ggplot(aes(age, n, colour = sex)) + 
+  geom_line() + 
+  labs(y = "Estimated number of injuries")
 
-  selected <- reactive(injuries %>% dplyr::filter(prod_code == input$code))
-
-  output$diag <- renderTable(
-    selected() %>% count(diag, wt = weight, sort = TRUE)
-  )
-  output$body_part <- renderTable(
-    selected() %>% count(body_part, wt = weight, sort = TRUE)
-  )
-  output$location <- renderTable(
-    selected() %>% count(location, wt = weight, sort = TRUE)
-  )
-
-  summary <- reactive({
-    selected() %>%
-      count(age, sex, wt = weight) %>%
-      left_join(population, by = c("age", "sex")) %>%
-      mutate(rate = n / population * 1e4)
-  })
-
-  output$age_sex <- renderPlot({
-    summary() %>%
-      ggplot(aes(age, n, colour = sex)) +
-      geom_line() +
-      labs(y = "Estimated number of injuries")
-  }, res = 96)
-}
-
-shinyApp(ui, server)
