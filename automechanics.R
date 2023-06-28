@@ -10,7 +10,6 @@ dt  <- tribble(
 
 
 ui <- fluidPage(
-                 dataTableOutput("static")
 tableOutput("static"),
 #  dataTableOutput("dynamic")
 )
@@ -21,16 +20,19 @@ server <- function(input, output, session) {
  output$static <- shiny::renderTable({
     data.frame(
     name = c("GOOGLE", "YAHOO"),
-    url = c(toString(tags$a("http://nytimes.com")),
-             toString(tags$a("http://nytimes.com"))
+    url = c(
+toString(tags$a(href="www.rstudio.com", "Click here!")),
+toString(tags$a(href="www.rstudio.com", "Click here!"))
+)
+#    url  = c("<a href>http://nytimes.com</a>",
+#             "<a href>http://nytimes.com</a>")
         )
-    )
+ })
     
       #     url = c("<a href=\"http://www.google.com\">http://www.google.com</a>",
       #                            "http://www.yahoo.com")
       #                            )
-    })
  } 
 shinyApp(ui, server)
-
-tags$a("http://" + paste0(k))
+tags$a(href="www.rstudio.com", "Click here!")
+## <a href="www.rstudio.com">Click here!</a> 
