@@ -1,0 +1,11 @@
+name: first_shiny_app
+title:
+username:
+account: jimrothstein
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 9381313
+bundleId: 7399929
+url: https://jimrothstein.shinyapps.io/first_shiny_app/
+when: 1687996167.53848
+lastSyncTime: 1687996167.53849
