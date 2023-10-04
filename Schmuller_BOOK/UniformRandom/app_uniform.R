@@ -1,7 +1,12 @@
+# PURPOSE: Hist of sample data draw from uniform distribution
+
+# USAGE:  (source("app_uniform.R"))
+# TAGS:  shiny, hist, uniform dist, siderInput
+
 library(shiny)
 ui <- fluidPage(
 sliderInput(inputId = "number", 
-            label = "Select a number",
+            label = "Select a number for N",
             value = 500, min = 25, max = 1000),
 plotOutput("hist")
 )

@@ -1,5 +1,5 @@
 library(shiny)
-#   CHOISE :   One (1)  of the follwing
+#   CHOISE :   One (1)  of the follwing (for UI)
 ##
 # --------------------------------- Text-----------------------------------
 ui <- fluidPage(
