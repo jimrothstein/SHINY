@@ -1,0 +1,103 @@
+
+```{r}
+#| eval: true
+#| include: false
+library(data.table)
+```
+
+```{r}
+#| eval: true
+#| include: false
+
+# 1900 missing data
+
+s="
+year, count
+1901, 6
+1920, 8
+1940, 14
+1945, 20
+1952, 20
+1953, 11
+1954, 0
+1955, 7
+1960, 17
+1965, 17
+1970, 29
+1975, 9
+1980, 9
+1985, 19
+1990, 25
+1995, 16
+2000, 11
+2005, 18
+2010, 15
+2015, 29
+2020, 22
+2022, 25
+2023, 31"
+
+x= fread(s)
+
+```
+### Eugene, OR
+REF: <https://www.extremeweatherwatch.com/cities/eugene/year-1952>  \
+Plot:  Number of days >= 90F  (each year)
+
+```{r}
+dt = as.data.table(x)
+dt
+fit  <- lm(count ~ year, data=dt)
+summary(fit)
+coef(fit) |> round(1)
+```
+
+```{r}
+#| include: false
+#| echo: false
+
+# regression is bad
+if (F) {
+png("temp_above_90.png")
+#pdf("temp_above_90.pdf")
+plot(dt$year, dt$count)
+abline(a=-260.5, b=0.1)
+abline(coef=c(0.1, -260.6))
+abline(coef=c( -260.6, .1))
+abline(h=0)
+dev.off()
+}
+```
+#### Plot
+```{r}
+#| include: true
+plot(dt$year, dt$count)
+abline(h=0)
+abline(h=20, col="red")
+abline(coef=c(5, .1))
+```
+
+```{r}
+#| include: false
+#| eval: false
+
+# Create some variables
+x <- 1:10
+y1 <- x*x
+y2  <- 2*y1
+
+# Gives first line
+plot(x, y1, type = "b", frame = FALSE, pch = 19, 
+     col = "red", xlab = "x", ylab = "y")
+
+# Add a second line
+lines(x, y2, pch = 18, col = "blue", type = "b", lty = 2)
+# Add a legend to the plot
+legend("topleft", legend=c("Line 1: x*x", "Line 2: 2*x*x"),
+       col=c("red", "blue"), lty = 1:2, cex=0.8)
+```
+
+```
+### TODO:
+-   Add years
+-   Decorate plot
