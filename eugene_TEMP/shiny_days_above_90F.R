@@ -1,6 +1,5 @@
 library(data.table)
 
-
 # 1900 missing data
 
 s="
@@ -43,15 +42,12 @@ summary(fit)
 coef(fit) |> round(1)
 
 }
-
+# --------------
 library(shiny)
-
     ui = fluidPage(
                    tableOutput('table')
 
                    )
-
-
     server = function(input, output) {
       output$table <- renderTable(x)
     #  output$hist <- renderPlot({
@@ -60,11 +56,19 @@ library(shiny)
     #}
   #)
 }
-
   shinyApp(ui, server)
+
+# ----------------------
+library(shiny)
+    ui = fluidPage(
+                   tableOutput('table')
+                   )
+    server = function(input, output) {
+      output$table <- renderTable(x)
+shinyApp(ui, server)
+
 # ----------------------
 
-if (F)
 
 # regression is bad
 if (F) {

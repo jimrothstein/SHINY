@@ -15,4 +15,4 @@ library(shiny)
   #)
 }
 
-  shinyApp(ui, server)
+shinyApp(ui, server)
