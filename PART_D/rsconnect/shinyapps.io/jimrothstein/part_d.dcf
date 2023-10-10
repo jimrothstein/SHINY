@@ -1,0 +1,10 @@
+name: part_d
+title:
+username: jimrothstein
+account: jimrothstein
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 10141056
+bundleId: 7782865
+url: https://jimrothstein.shinyapps.io/part_d/
+version: 1
