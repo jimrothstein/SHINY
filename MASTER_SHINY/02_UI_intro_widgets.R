@@ -1,3 +1,11 @@
+# ---------------------------------------------------
+#   /home/jim/code/SHINY/MASTER_SHINY/02_chapter_UI/02_UT_intro.R
+#   INTERACTIVE ONLY:
+#   PURPOSE:    ui
+#   USAGE:      Selectively choose sections to run.
+#   TAGS:   radioButtons, textInput, passwordInput, textAreaInput(, numericInput(, sliderInput(, dateInput(, dateRangeInput, selectInput, icon
+# ---------------------------------------------------
+
 library(shiny)
 #   CHOISE :   One (1)  of the follwing (for UI)
 ##
@@ -64,11 +72,21 @@ ui <- fluidPage(
     checkboxInput("shutdown", "Shutdown?")
 )
 # --------------------------------- -----------------------------------
-# --------------------------------- -----------------------------------
-# --------------------------------- -----------------------------------
-# --------------------------------- -----------------------------------
-# --------------------------------- -----------------------------------
+
+
+
+
+# ---------------------------------SERVER -----------------------------------
+
 server <- function(input, output, session) {
 }
 
 shinyApp(ui, server)
+
+#nnoremap <C-m> <leader>wwa<C-C><esc><leader>ww
+#nnoremap <leader>z <leader>wwa
+
+
+
+
+

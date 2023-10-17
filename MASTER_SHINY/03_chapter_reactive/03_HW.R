@@ -1,5 +1,6 @@
 library(shiny)
 #   CHOISE :   One (1)  of the follwing
+#   interactive only
 ##
 ui <- fluidPage(
   textInput("name", "What's your name?"),

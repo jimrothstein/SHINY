@@ -1,10 +1,37 @@
+
+
+TODO:
+          - cold-fold not working
+          - rmarkdown for horiz line not working.
+          - _quarto.yml working?
+
+PURPOSE:  This is quarto document with embedded Shiny.
+
+USAGE:    quarto serve *.qmd in zsh terminal
+          Then manually open browser to 127.0.0.1:port, where port number is in console
+
+NOTE:     HTML page automatically refreshes with code changes. 
+          Can run interactively.
+---
+
+####  REF: <https://www.extremeweatherwatch.com/cities/eugene/year-1952>  \
+####  Plot:  Number of days >= 90F  (each year)
+
+```{r}
+#| echo: false
 library(data.table)
-# 1900 missing data
 {
 s="
 year, count
+1895, 5
 1901, 6
+1905, 6
+1910, 6
+1915, 12	
 1920, 8
+1925, 10
+1930, 7
+1935, 16
 1940, 14
 1945, 20
 1952, 20
@@ -25,26 +52,29 @@ year, count
 2015, 29
 2020, 22
 2022, 25
-2023, 31" 
+2023, 31"
 }
 x= fread(s)
+
+
 # --------------
 library(shiny)
     ui = fluidPage(
+                   h3("Version5"),
                    textOutput('version'),
                    plotOutput('temp'),
-                   tableOutput('table')
+                   tableOutput('table'),
                    
                    )
     server = function(input, output) {
-      output$version  <- renderText("version 3")
+      #output$version  <- renderText("version 3")
       output$table <- renderTable(x)
       output$temp  <- renderPlot({
           plot(x$year, x$count, xlab="Year", 
                ylab="Days above 90F", 
                main="Days above 90F", sub="Is it getting hotter?")
           abline(h=20, col="red")
-          abline(h=10, col="red")
+#          abline(h=10, col="red")
       }, width=800)
       }
     
@@ -57,27 +87,5 @@ if (F) {
 
 shinyApp(ui, server)
 # --------------
-library(shiny)
-    ui = fluidPage(
-           tableOutput('table')
-                   )
-    server = function(input, output) {
-      output$table  <- renderTable(x)
-}
-  shinyApp(ui, server)
 
-# ----------------------
-library(shiny)
-    ui = fluidPage(
-                   textOutput('version'),
-                   tableOutput('table')
-                   
-                   )
-    server = function(input, output) {
-      output$version  <- renderText("version 2")
-      output$table <- renderTable(x)
-    }
-shinyApp(ui, server)
-
-# ----------------------
-
+```

@@ -1,6 +1,6 @@
 library(shiny)
 ### Only run this example in interactive R sessions
-if (interactive()) {
+if (interactive()) {                   #
   # table example
   shinyApp(
     ui = fluidPage(

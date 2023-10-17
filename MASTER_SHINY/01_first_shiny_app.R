@@ -5,9 +5,9 @@ library(shiny)
 #
 
 # USAGE: (source(<file>))    (Note:  need  outer paranthesis, like printing)
-#Also can open 2nd, exteranl browwer to see same results.
-#Reactive:   code is 'recipe' to fire under right
-#conditions. 
+# Also can open 2nd, exteranl browwer to see same results.
+# Reactive:   code is 'recipe' to fire under right
+# conditions.
 
 ui <- fluidPage(
   "Hello, world!"
@@ -32,3 +32,4 @@ server <- function(input, output, session) {
   })
 }
 shinyApp(ui, server)
+#shiny::runApp(display.mode="showcase")

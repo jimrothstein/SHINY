@@ -1,9 +1,11 @@
+QUARTO FILE
+
 ```{r}
 library(data.table)
 ```
 
 ```{r}
-the_file  <- "cms_grievance_ALL_decisions_data.csv"   # 9/2022 - 9/2023
+the_file  <- "cms_part_d_01OCT2022_30SEPT2023_data.csv"
 x  <- fread(the_file)
 dim(x)  
 # [1] 34851    10
@@ -31,13 +33,10 @@ options(knitr.table.format = "html")
 x[, .(decision_number, decision_rationale)][1:10] |>
   kable(table.attr = 'data-quarto-disable-processing="true"') 
 ```
-```{r}
-knitr::knit_exit()
-
-```
 
 ### all are part d
 ```{r}
+#| include: false
 head(x$part)
 table(x$part)
 
@@ -70,15 +69,15 @@ head(x[, c(1,7)], n=20)
 
 ### top 16 drugs (in grievances)
 ```{r}
-unique(x$drug)  # 4289 unique drugs
+length(unique(x$drug))  # 4289 unique drugs
 y  <- table(x$drug)
 
 is.atomic(y)
 typeof(y)
-y
+#y
 
 dt  <- data.table(y)
-dt[order(desc(N))][1:10, ]
+dt[order(-(N))][1:10, ]
 dt[order(N)][1:10, ]
 
 dt[order(N)][N>20] # 344
@@ -147,6 +146,7 @@ df %>%
 head(iris) %>% 
   kable(table.attr = 'data-quarto-disable-processing="true"') %>% 
   kableExtra::kable_styling(bootstrap_options = c("basic", "hover"), full_width = FALSE)
+dt
 ```
 ```{r}
 df %>%
