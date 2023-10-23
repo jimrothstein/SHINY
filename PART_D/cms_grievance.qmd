@@ -1,109 +1,8 @@
-QUARTO FILE
-
-```{r}
-library(data.table)
-```
-
-```{r}
-the_file  <- "cms_part_d_01OCT2022_30SEPT2023_data.csv"
-x  <- fread(the_file)
-dim(x)  
-# [1] 34851    10
-
-names(x)
-#  [1] "decision_number"        "part"                  
-#  [3] "decision_date"          "decision_date_sortable"
-#  [5] "decision"               "appeal_type"           
-#  [7] "_condition"             "drug"                  
-#  [9] "decision_rationale"     "coverage_rules"        
-```
-
-### decision_rational (paragraph, very large)
-```{r}
-if (F) x$decision_rationale
-head(x$decision_rationale, 3)
-```
-
-```{r}
-library(knitr)
-library(data.table)
-library(kableExtra)
-options(knitr.table.format = "html") 
-
-x[, .(decision_number, decision_rationale)][1:10] |>
-  kable(table.attr = 'data-quarto-disable-processing="true"') 
-```
-
-### all are part d
-```{r}
-#| include: false
-head(x$part)
-table(x$part)
-
-head(x$decision_date)
-head(x$decision_date_sortable)   # YYYYmmdd
-```
-
-### decision
-```{r}
-table(x$decision)
-# 
-#           Favorable Partially Favorable         Unfavorable 
-#                2031                  69               32751 
-
-y = x[, .N, by=decision]
-png("cms_decisions.png")
-barplot(y$N, names.arg=y$decision, main="CMS Decisions")
-dev.off()
-```
-
-### appeal_type; mostly drug
-```{r}
-table(x$appeal_type)
-```
-### _condition (1 word, can be sentence)
-```{r}
-
-head(x[, c(1,7)], n=20)
-```
-
-### top 16 drugs (in grievances)
-```{r}
-length(unique(x$drug))  # 4289 unique drugs
-y  <- table(x$drug)
-
-is.atomic(y)
-typeof(y)
-#y
-
-dt  <- data.table(y)
-dt[order(-(N))][1:10, ]
-dt[order(N)][1:10, ]
-
-dt[order(N)][N>20] # 344
-dt[order(N)][N>50] # 121
-dt[order(N)][N>100] # 49 drugs
-
-t16 = dt[order(N)][N>200] # 16 drugs
-t16
-
-barplot(t16$N, names.arg = t16$V1)
-hist(t16$N)
-
-
-```
-
-### decision_rational (paragraph, very large)
-```{r}
-if (F) x$decision_rationale
-head(x$decision_rationale, 3)
-
-```
-
-##  Kable, Bootstrap    
 ---
-output: html_document
 ---
+
+Purpose:  QUARTO (HTML) and WIDE Tables
+
 TAGS: quarto, kable, kableExtra, width of HTML tables
 
 ## wide tables?
@@ -111,6 +10,7 @@ REF: https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_
 REF: https://github.com/quarto-dev/quarto-cli/issues/5737
 
 **turn off quarto processing**
+
 
 
 ```

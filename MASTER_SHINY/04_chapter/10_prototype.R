@@ -18,24 +18,27 @@ library(ggplot2)
 ##  now) -- see issues in httpgd
 if (F) library(httpgd) # control plots easily 
 
-
+the_dir ="./neiss" 
 # change "master" to "main", then works 
-  if (F) {
+if (F) {
+
   download <- function(name) {
     url <- "https://github.com/hadley/mastering-shiny/raw/main/neiss/"
     cat(from  <- paste0(url, name), "\n")
     cat(to  <-  paste0("neiss/", name), "\n")
     utils::download.file(from,to,  quiet = TRUE)
   }
+
   download("injuries.tsv.gz")
   download("population.tsv")
   download("products.tsv")
-  }
-injuries <- vroom::vroom("../neiss/injuries.tsv.gz")
+
+}
+injuries <- vroom::vroom("./neiss/injuries.tsv.gz")
 injuries
 
 
-products <- vroom::vroom("../neiss/products.tsv")
+products <- vroom::vroom("./neiss/products.tsv")
 products
 #> # A tibble: 38 × 2
 #>   prod_code title                            
@@ -48,13 +51,14 @@ products
 #> 6       676 rugs or carpets, not specified   
 #> # … with 32 more rows
 
-population <- vroom::vroom("../neiss/population.tsv")
+population <- vroom::vroom("./neiss/population.tsv")
 population
 
 
 # numeric[]
 prod_codes <- setNames(products$prod_code, products$title)
 
+# ---------------------------- UI ------------------------------
 ui <- fluidPage(
   fluidRow(
     column(6,
@@ -101,3 +105,5 @@ server <- function(input, output, session) {
 }
 
 shinyApp(ui, server)
+
+#		/* vim: set filetype=r : */

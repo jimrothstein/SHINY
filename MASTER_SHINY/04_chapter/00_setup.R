@@ -7,7 +7,7 @@ library(shiny)
 library(vroom)
 library(tidyr)
 library(dplyr)
-library(ggplot)
+library(ggplot2)
 
 ##  tries to install `BH`, which has errors (don't want to waste  time on this
 ##  now) -- see issues in httpgd
@@ -47,7 +47,8 @@ products
 population <- vroom::vroom("neiss/population.tsv")
 population
 
-selected <- injuries %>% dplyr::filter(prod_code == 649)
+
+selected <- injuries %>% dplyr::filter(prod_code == 649) # toilet
 nrow(selected)
 
 # weighted by location, body_part, diag, sex
@@ -86,3 +87,4 @@ selected %>%
 
 
 
+		/* vim: set filetype=r : */

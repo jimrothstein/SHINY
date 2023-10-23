@@ -39,7 +39,7 @@ if (F) library(httpgd) # control plots easily
   }
 
 ##  if already downloaded:
-injuries <- vroom::vroom("injuries.tsv.gz")
+injuries <- vroom::vroom("./neiss/injuries.tsv.gz")
 head(injuries, n=3)
 
 products <- vroom::vroom("products.tsv")
