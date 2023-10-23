@@ -1,0 +1,28 @@
+---
+title: "decisions_boxplot.qmd"
+format: 
+  html
+server: shiny
+---
+
+```{r}
+library(data.table)
+library(shiny)
+```
+```{r}
+    plotOutput("plot", width="600px")
+```
+
+```{r}
+#| context: server
+x  <- data.table::fread("cms_part_d_01OCT2022_30SEPT2023_data.csv")
+y  <- x[ , .N, by=decision]
+    output$plot <- renderPlot(
+                    barplot(y$N, names.arg=y$decision, 
+                    main="CMS Decisions: Part D, 01 OCT 2022 -- 30 SEPT 2023"), 
+                              res = 96)
+```
+  
+
+
+

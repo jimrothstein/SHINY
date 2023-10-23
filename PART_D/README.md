@@ -8,7 +8,7 @@ USAGE:
     QUARTO:
     Run usual quarto preview .... .qmd
 
-    SHINY embeded in quarto file:  not sure yet!
+    SHINY embeded in QUARTO file:  use .qmd, and need 2 changes in yml, chunks
 
 
 NOTE:   ~/code/stats_project/part_d   DO NOT USE
