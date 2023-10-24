@@ -7,10 +7,12 @@ library(data.table)
 library(shiny)
 
 x  <- fread("cms_part_d_01OCT2022_30SEPT2023_data.csv")
-drugs  <- x$drug
+#drugs  <- x$drug
+drugs = x[, .(drug)][order(drug)]   # to keep as dt
 # -------------------------------------------------------
 
     ui = fluidPage(
+      h3("Select Drug, Favorable v Denied")
       fluidRow(
         column(6,
           # R wants: selectizeInput()
@@ -30,7 +32,9 @@ drugs  <- x$drug
 )
 # -------------------------------------------------------
     server = function(input, output) {
-      output$drug  <- renderTable(table(x$drug))
+#      output$drug  <- renderTable(table(x$drug))
+#      output$drug  <- renderTable(x[drug == "LIDOCAINE", .N, by=decision])
+       output$drug  <- renderTable(x[drug == input$drug , .N, by=decision])
 
     }
   
