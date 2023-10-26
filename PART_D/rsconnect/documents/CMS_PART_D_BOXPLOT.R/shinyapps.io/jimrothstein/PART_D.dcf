@@ -5,9 +5,9 @@ account: jimrothstein
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 10141309
-bundleId: 7782920
+bundleId: 7844219
 url: https://jimrothstein.shinyapps.io/PART_D/
 version: 1
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: cms_grievance.qmd|CMS_PART_D_DENIALS_vs_APPROVE.R|CMS_PART_D.R|README.md
+ignoredFiles: 00_no_shiny.R|02_display_decisions.qmd|04_decisions_boxplot.html|04_decisions_boxplot.qmd|10_display_all_drugs.R|15_display_one_drug.R|cms_grievance.qmd|cms_part_d_01OCT2022_30SEPT2023_data.csv|custom.scss|docs/simple_shiny.html|docs/table_shiny.html|QUARTO_WIDE_TABLES.qmd|quarto.yml|README.md|simple_shiny.html|simple_shiny.qmd|04_decisions_boxplot_files|decisions_boxplot_files|simple_shiny_files

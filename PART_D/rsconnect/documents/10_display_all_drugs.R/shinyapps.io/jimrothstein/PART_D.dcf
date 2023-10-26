@@ -1,0 +1,13 @@
+name: PART_D
+title: PART_D
+username: jimrothstein
+account: jimrothstein
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 10141309
+bundleId: 7844209
+url: https://jimrothstein.shinyapps.io/PART_D/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: 00_no_shiny.R|02_display_decisions.qmd|02_display_decisions.R|04_decisions_boxplot.html|04_decisions_boxplot.qmd|15_display_one_drug.R|cms_grievance.qmd|CMS_PART_D_BOXPLOT.R|custom.scss|docs/simple_shiny.html|docs/table_shiny.html|QUARTO_WIDE_TABLES.qmd|quarto.yml|README.md|simple_shiny.html|simple_shiny.qmd|04_decisions_boxplot_files|decisions_boxplot_files|simple_shiny_files
