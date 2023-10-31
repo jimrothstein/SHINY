@@ -1,0 +1,12 @@
+name: shinyapps
+title:
+username: jimrothstein
+account: jimrothstein
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 10339493
+bundleId: 7863167
+url: https://jimrothstein.shinyapps.io/shinyapps/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE

@@ -9,35 +9,51 @@ ui <- dashboardPage(
   dashboardSidebar(
     sidebarMenu(
       menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
-      menuItem("Widgets", tabName = "widgets", icon = icon("th"))
+      menuItem("Widgets", tabName = "widgets", icon = icon("th")),
+      menuItem("Jim Widget", tabName = "jim_widget", icon = icon("th"))
     )
-),
+  ),
   ## Body content
   dashboardBody(
     tabItems(
       # First tab content
-      tabItem(tabName = "dashboard",
+      tabItem(
+        tabName = "dashboard",
         fluidRow(
           box(plotOutput("plot1", height = 250)),
-
           box(
             title = "Controls",
             sliderInput("slider", "Number of observations:", 1, 100, 50)
-          )
-        )
+          ),
+        ),
+        fluidRow(
+          helpText("This is help text")
+        ),
       ),
 
       # Second tab content
-      tabItem(tabName = "widgets",
+      tabItem(
+        tabName = "widgets",
         h2("Widgets tab content")
       ),
       # Third ?
-      tabItem(tabName = "jim",
-              h2("Jim's widget")
-              )
-      )                                # end all tabItems
-  )
-)
+      tabItem(
+        tabName = "jim_widget",
+        h2("Jim's widget"),
+        p("The purpose is ..."),
+        fluidRow(
+          box(
+            title = "Future Project Description",
+            background = "green"
+          ),
+        ),
+        fluidRow(
+          p("Begin discussion here")
+        )
+      )
+    ) # end all tabItems
+  ) # end dashboardbody
+) # end dashboardPage
 
 
 server <- function(input, output) {
@@ -45,11 +61,17 @@ server <- function(input, output) {
   histdata <- rnorm(500)
 
   output$plot1 <- renderPlot({
-    data <- histdata[seq_len(input$slider)] #seq_len(n) returns 1:n
+    data <- histdata[seq_len(input$slider)] # seq_len(n) returns 1:n
     hist(data)
   })
 }
 
-shinyApp(ui, server)
+# interactive, use:
+if (F) shinyApp(ui, server)
 
-#		/* vim: set filetype=r : */
+# Autoreload, can run interactive()
+options(shiny.autoreload = TRUE)
+app <- shiny::shinyApp(ui, server)
+shiny::runApp(app)
+
+# 		/* vim: set filetype=r : */
