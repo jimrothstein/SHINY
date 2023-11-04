@@ -2,7 +2,7 @@ library(shiny)
 #   PROBLEM:  Shiny too reactive; reacts each letter of name
 #   USAGE:  interactive choose ONE of the servers below
 
-ui <- fluidPage( 
+ui <- fluidPage(
   textInput("name", "What's your name?"),
   textOutput("greeting")
 )
@@ -17,7 +17,7 @@ server <- function(input, output, session) {
 }
 
 
-# --------------------- SAME, but reactive expr-----------------------
+# --------------------- SAME, but a reactive expr-----------------------
 
 server <- function(input, output, session) {
   string <- reactive(paste0("Hello ", input$name, "!"))
@@ -26,5 +26,3 @@ server <- function(input, output, session) {
 
 # --------------------------------------------
 shinyApp(ui, server)
-
-

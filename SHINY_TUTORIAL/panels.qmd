@@ -1,0 +1,53 @@
+
+
+
+### well panel
+```{r}
+options(shiny.autoreload = TRUE)
+library(shiny)
+
+# Define UI with wellPanels
+z  <- fluidRow("Row 4")
+ui <- fluidPage(
+  wellPanel( fluidRow("Row 1") ),
+  wellPanel( fluidRow("Row 2") ),
+  wellPanel( fluidRow("Row 3") ),
+  wellPanel( z )
+
+)
+
+# Define server function that does nothing
+server <- function(input, output, session) {}
+
+# Create the app object
+shinyApp(ui = ui, server = server)
+```
+
+
+### sidebarLayout
+```{r}
+
+library(shiny)
+options(shiny.autoreload = TRUE)
+
+# Define UI with default width sidebar
+ui <- fluidPage(
+  sidebarLayout(
+    sidebarPanel(
+      strong("Sidebar"),
+      "Usually inputs go here, width = 4 by default"
+      ),
+    mainPanel(
+      strong("Main panel"),
+      tags$br(),
+      "Usually outputs go here, width = 8 by default"
+      )
+  )
+)
+
+server <- function(input, output, session) {}
+
+shinyApp(ui = ui, server = server)
+```
+
+vim:linebreak:nospell:nowrap:cul tw=78 fo=tqlnr foldcolumn=1 cc=+1 filetype=r

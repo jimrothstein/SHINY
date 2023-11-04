@@ -8,9 +8,10 @@ ui <- dashboardPage(
   dashboardHeader(title = "Basic dashboard"),
   dashboardSidebar(
     sidebarMenu(
-      menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
+      shinydashboard::menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
       menuItem("Widgets", tabName = "widgets", icon = icon("th")),
-      menuItem("Jim Widget", tabName = "jim_widget", icon = icon("th"))
+      menuItem("Jim Widget", tabName = "jim_widget", icon = icon("th")),
+      menuItem("List of Drugs", tabName = "list_drugs", icon = icon("th"))
     )
   ),
   ## Body content
@@ -41,19 +42,29 @@ ui <- dashboardPage(
         tabName = "jim_widget",
         h2("Jim's widget"),
         p("The purpose is ..."),
-        fluidRow(
-          box(
-            title = "Future Project Description",
-            background = "green"
+        tags$li("item1"),
+        tags$li(
+          "item2",
+          fluidRow(
+            box(
+              title = "Future Project Description",
+              background = "green"
+            ),
           ),
-        ),
-        fluidRow(
-          p("Begin discussion here")
+          fluidRow(
+            p("Begin discussion here")
+          )
         )
-      )
+      ), # end tabItem
+      tabItem(
+        "list_drugs",
+        p("List of Drugs ... soon")
+      ) # end tabItem
     ) # end all tabItems
   ) # end dashboardbody
 ) # end dashboardPage
+
+
 
 
 server <- function(input, output) {
@@ -69,9 +80,19 @@ server <- function(input, output) {
 # interactive, use:
 if (F) shinyApp(ui, server)
 
-# Autoreload, can run interactive()
-options(shiny.autoreload = TRUE)
-app <- shiny::shinyApp(ui, server)
-shiny::runApp(app)
+# Interactive (neovim) use this:
+if (F) {
+  options(shiny.autoreload = TRUE)
+  app <- shiny::shinyApp(ui, server)
+  shiny::runApp(app)
+}
+
+# TO RUN, separate R session
+if (F) {
+  options(shiny.autoreload = TRUE)
+  shiny::runApp()
+}
+
+
 
 # 		/* vim: set filetype=r : */

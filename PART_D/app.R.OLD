@@ -1,0 +1,80 @@
+## app.R ##
+
+
+##  https://rstudio.github.io/shinydashboard/get_started.html
+##  PURPOSE:
+##    Tweak into DASHBOARD for Part_D   version 0
+##  USAGE:  in separate R session,
+##          options(shiny.autoreload = TRUE) and shiny::runApp()
+##          This file MUST be called app.R
+
+library(shinydashboard)
+library(shiny)
+options(shiny.autoreload = TRUE)
+ui <- dashboardPage(
+  dashboardHeader(title = "CMS Part D Denials:  Dashboard"),
+  dashboardSidebar(
+    sidebarMenu(
+      shinydashboard::menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
+      menuItem("Purpose", tabName = "Purpose", icon = icon("th")),
+      menuItem("Jim Widget", tabName = "jim_widget", icon = icon("th"))
+    )
+  ),
+  ## Body content
+  dashboardBody(
+    tabItems(
+      # First tab content
+      tabItem(
+        tabName = "dashboard",
+        fluidRow(
+          box(plotOutput("plot1", height = 250)),
+          box(
+            title = "Controls",
+            sliderInput("slider", "Number of observations:", 1, 100, 50)
+          ),
+        ),
+        fluidRow(
+          helpText("This is help text")
+        ),
+      ),
+
+      # Second tab content
+      tabItem(
+        tabName = "Purpose",
+        h2("Purpose"),
+        p("The purpose is ...to explore CMS Part ")
+      ),
+      # Third ?
+      tabItem(
+        tabName = "jim_widget",
+        h2("Jim's widget"),
+        p("The purpose is ..."),
+        tags$li("item1"),
+        tags$li("item2"),
+        fluidRow(
+          box(
+            title = "Future Project Description",
+            background = "blue"
+          ),
+        ),
+        fluidRow(
+          p("Begin discussion here")
+        )
+      )
+    ) # end all tabItems
+  ) # end dashboardbody
+) # end dashboardPage
+
+
+server <- function(input, output) {
+  set.seed(122)
+  histdata <- rnorm(500)
+
+  output$plot1 <- renderPlot({
+    data <- histdata[seq_len(input$slider)] # seq_len(n) returns 1:n
+    hist(data)
+  })
+}
+
+shinyApp(ui, server)
+# 		/* vim: set filetype=r : */

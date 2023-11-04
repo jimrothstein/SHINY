@@ -1,0 +1,41 @@
+```{r}
+library(shiny)
+names(tags)                            # fcts to translate R to HTML
+
+tags$b("Example of b tag")
+# <b>Example of b tag</b>
+```
+### Chunk runs Shiny; displays h1, h2...
+```{r}
+library(shiny)
+
+# HTML tags
+ui <- fluidPage(
+  tags$h1("First level heading"), 
+  tags$h2("Second level heading"), 
+  tags$h3("Third level heading"),
+  tags$br(),
+  tags$a("This app is built with Shiny.", href = "https://shiny.posit.co/"),
+  tags$br(),
+  # embed your html yourself
+  HTML("hello </br> world")
+)
+
+# Define server function that does nothing :)
+server <- function(input, output, session) {}
+# Create the app object
+shinyApp(ui = ui, server = server)
+```
+### movies app, from Lessons  
+```{r}
+library(shiny)
+# Get the data
+
+file <- "https://github.com/rstudio-education/shiny-course/raw/main/movies.RData"
+destfile <- "movies.RData"
+
+download.file(file, destfile)
+```
+
+
+vim:linebreak:nospell:nowrap:cul tw=78 fo=tqlnr foldcolumn=1 cc=+1 filetype=r
