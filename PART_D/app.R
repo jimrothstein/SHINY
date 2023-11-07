@@ -1,4 +1,3 @@
-## app.R ##
 ##  https://rstudio.github.io/shinydashboard/get_started.html
 
 # TODO:
@@ -13,7 +12,7 @@ if (F) {
   shiny::runApp(app)
 }
 
-# TO RUN, separate R session
+# TO RUN, separate R session (TODO: must open broswer to port)
 if (F) {
   options(shiny.autoreload = TRUE)
   shiny::runApp()
@@ -26,6 +25,7 @@ tab_Item <- function(label, code) {
   tabItem(label, code)
 }
 
+source("mod_02_decisions.R")
 
 library(shinydashboard)
 library(shiny)
@@ -36,7 +36,8 @@ ui <- dashboardPage(
   dashboardSidebar(
     sidebarMenu(
       shinydashboard::menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
-      menuItem("Widgets", tabName = "widgets", icon = icon("th")),
+      menuItem("Display Decisions", tabName = "decisions", icon = icon("th")),
+      decisions_ui("decisions"),
       menuItem("Jim Widget", tabName = "jim_widget", icon = icon("th")),
       menuItem("List of Drugs", tabName = "list_drugs", icon = icon("th")),
       new_menuItem("experiment", tName = "jim_widget")
@@ -62,8 +63,8 @@ ui <- dashboardPage(
 
       # Second tab content
       tabItem(
-        tabName = "widgets",
-        h2("Widgets tab content")
+        tabName = "decisions",
+        h2("Decisions tab content")
       ),
       # Third ?
       tabItem(
@@ -105,20 +106,7 @@ server <- function(input, output) {
   })
 }
 
-# interactive, use:
-if (F) shinyApp(ui, server)
-
-# Interactive (neovim) use this:
-if (F) {
-  options(shiny.autoreload = TRUE)
-  app <- shiny::shinyApp(ui, server)
-  shiny::runApp(app)
-}
-
-# TO RUN, separate R session (rename to app.R)
-if (F) {
-  options(shiny.autoreload = TRUE)
-  shiny::runApp()
-}
+# required for interactive AND running from external R
+shinyApp(ui, server)
 
 # 		/* vim: set filetype=r : */

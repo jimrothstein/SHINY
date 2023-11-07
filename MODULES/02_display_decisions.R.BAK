@@ -7,25 +7,36 @@
 library(data.table)
 library(shiny)
 
-source("mod_02_decisions.R")
 x <- fread("cms_part_d_01OCT2022_30SEPT2023_data.csv")
 
+# one
+query <- c("View First 10", "View All Decisions")
 
+# two
+n <- c("View First 10", "View All Decisions (~ 60 seconds)")
+v <- c("View First 10", "View All Decisions")
 # -------------------------- UI -----------------------------
 ui <- fluidPage(
-  #  tableOutput("decisions")
-  decisions_ui("decisions")
+  # radioButtons("queryId", "Choose 1", choices = query),
+  #  radioButtons("queryId", "Choose 1", choiceNames = n, choiceValues = v),
+  tableOutput("decisions")
 )
+
+
 
 
 
 
 # -------------------------- SERVER-----------------------------
 server <- function(input, output) {
-  decisions_server("decisions")
-  #   output$decisions <- renderTable({
-  #     x
-  #   })
+  ch <- reactive(input$queryId)
+  output$decisions <- renderTable({
+    if (ch() == "View First 5") {
+      head(x)
+    } else {
+      x
+    }
+  })
 }
 # -------------------------------------------------------
 shinyApp(ui, server)
