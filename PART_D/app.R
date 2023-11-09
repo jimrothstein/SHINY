@@ -26,6 +26,7 @@ tab_Item <- function(label, code) {
 }
 
 source("mod_02_decisions.R")
+source("mod_10_display_drugs.R")
 
 library(shinydashboard)
 library(shiny)
@@ -37,7 +38,6 @@ ui <- dashboardPage(
     sidebarMenu(
       shinydashboard::menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
       menuItem("Display Decisions", tabName = "decisions", icon = icon("th")),
-      decisions_ui("decisions"),
       menuItem("Jim Widget", tabName = "jim_widget", icon = icon("th")),
       menuItem("List of Drugs", tabName = "list_drugs", icon = icon("th")),
       new_menuItem("experiment", tName = "jim_widget")
@@ -61,10 +61,11 @@ ui <- dashboardPage(
         ),
       ),
 
-      # Second tab content
+      # Second tab content/ Column to Display
       tabItem(
         tabName = "decisions",
-        h2("Decisions tab content")
+        h2("Decisions tab content (very slow, ~ 60s)"),
+        decisions_ui("decisions"),
       ),
       # Third ?
       tabItem(
@@ -85,9 +86,11 @@ ui <- dashboardPage(
           )
         )
       ), # end tabItem
-      tab_Item(
-        "list_drugs",
-        p("List of Drugs ... soon or later")
+
+      tabItem(
+        tabName = "list_drugs",
+        p("List of Drugs ... soon or later"),
+        drugs_ui("drugs"),
       ) # end tabItem
     ) # end all tabItems
   ) # end dashboardbody
@@ -97,6 +100,9 @@ ui <- dashboardPage(
 
 
 server <- function(input, output) {
+  decisions_server("decisions")
+  drugs_server("drugs")
+
   set.seed(122)
   histdata <- rnorm(500)
 
@@ -105,6 +111,7 @@ server <- function(input, output) {
     hist(data)
   })
 }
+# decisions_server("decisions")
 
 # required for interactive AND running from external R
 shinyApp(ui, server)

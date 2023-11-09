@@ -19,6 +19,7 @@ ui <- fluidPage(
   )
 )
 
+
 # -------------------------------------------------------
 server <- function(input, output) {
   ## CHOOSE 1 (Alpha v Freq)

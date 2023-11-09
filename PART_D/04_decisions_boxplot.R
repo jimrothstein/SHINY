@@ -14,6 +14,12 @@ ui <- fluidPage(
     plotOutput("plot", width = "600px")
 )
 
+boxplot_ui  <- function(id) {
+    tagList(
+       plotOutput("plot", width = "600px")
+    )
+}
+
 server <- function(input, output, session) {
     output$plot <- renderPlot(
         barplot(y$N,
@@ -21,6 +27,18 @@ server <- function(input, output, session) {
             main = "CMS Decisions: Part D, 01 OCT 2022 -- 30 SEPT 2023"
         ),
         res = 96
+    )
+}
+
+boxplot_server  <- function(id){
+    moduleServer(id, function(input, output, session) {
+    data  <- reactive (y)    
+    output$plot  <- renderPlot(
+    barplot(data()$N,
+    names.arg = data()$decision,
+    main = "CMS Decisions: Part D, 01 OCT 2022 -- 30 SEPT 2023"
+    ),
+    res=96
     )
 }
 

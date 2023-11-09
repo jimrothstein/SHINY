@@ -1,6 +1,9 @@
 library(shiny)
 library(data.table)
 
+# UI: Choose column (from db) / Display Table
+# SERVER: return rows
+
 x <- fread("cms_part_d_01OCT2022_30SEPT2023_data.csv")
 decisions_ui <- function(id) {
   tagList(
