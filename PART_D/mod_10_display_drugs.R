@@ -9,7 +9,6 @@ x <- fread("cms_part_d_01OCT2022_30SEPT2023_data.csv")
 drugs <- x$drug
 # -------------------------------------------------------
 
-
 drugs_ui <- function(id) {
   fluidRow(
     column(
@@ -42,5 +41,6 @@ drugs_demo <- function(id) {
   shinyApp(ui, server)
 }
 
-
-# drugs_demo()
+if (F) {
+  drugs_demo()
+}

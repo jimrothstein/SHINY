@@ -16,7 +16,7 @@ decisions_ui <- function(id) {
 
 decisions_server <- function(id) {
   moduleServer(id, function(input, output, session) {
-    data <- reactive(x)
+    data <- reactive(head(x, n = 20))
     output$table <- renderTable({
       data()
     })

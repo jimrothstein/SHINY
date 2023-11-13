@@ -26,6 +26,7 @@ tab_Item <- function(label, code) {
 }
 
 source("mod_02_decisions.R")
+source("mod_04_boxplot.R")
 source("mod_10_display_drugs.R")
 
 library(shinydashboard)
@@ -36,9 +37,9 @@ ui <- dashboardPage(
   dashboardHeader(title = "Basic dashboard"),
   dashboardSidebar(
     sidebarMenu(
-      shinydashboard::menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
+      shinydashboard::menuItem("Welcome", tabName = "welcome", icon = icon("dashboard")),
       menuItem("Display Decisions", tabName = "decisions", icon = icon("th")),
-      menuItem("Jim Widget", tabName = "jim_widget", icon = icon("th")),
+      menuItem("Boxplot", tabName = "boxplot", icon = icon("th")),
       menuItem("List of Drugs", tabName = "list_drugs", icon = icon("th")),
       new_menuItem("experiment", tName = "jim_widget")
     )
@@ -48,45 +49,23 @@ ui <- dashboardPage(
     tabItems(
       # First tab content
       tabItem(
-        tabName = "dashboard",
+        tabName = "welcome",
         fluidRow(
-          box(plotOutput("plot1", height = 250)),
-          box(
-            title = "Controls",
-            sliderInput("slider", "Number of observations:", 1, 100, 50)
-          ),
-        ),
-        fluidRow(
-          helpText("This is help text")
-        ),
+          box(h2("Part D - Denials")),
+        )
       ),
-
       # Second tab content/ Column to Display
       tabItem(
         tabName = "decisions",
         h2("Decisions tab content (very slow, ~ 60s)"),
         decisions_ui("decisions"),
       ),
-      # Third ?
+      # Third: Boxplot of decisions
       tabItem(
-        tabName = "jim_widget",
-        h2("Jim's widget"),
-        p("The purpose is ..."),
-        tags$li("item1"),
-        tags$li(
-          "item2",
-          fluidRow(
-            box(
-              title = "Future Project Description",
-              background = "green"
-            ),
-          ),
-          fluidRow(
-            p("Begin discussion here")
-          )
-        )
+        tabName = "boxplot",
+        h2("boxplot"),
+        boxplot_ui("boxplot"),
       ), # end tabItem
-
       tabItem(
         tabName = "list_drugs",
         p("List of Drugs ... soon or later"),
@@ -97,21 +76,12 @@ ui <- dashboardPage(
 ) # end dashboardPage
 
 
-
-
 server <- function(input, output) {
   decisions_server("decisions")
+  boxplot_server("boxplot")
   drugs_server("drugs")
-
-  set.seed(122)
-  histdata <- rnorm(500)
-
-  output$plot1 <- renderPlot({
-    data <- histdata[seq_len(input$slider)] # seq_len(n) returns 1:n
-    hist(data)
-  })
 }
-# decisions_server("decisions")
+
 
 # required for interactive AND running from external R
 shinyApp(ui, server)
