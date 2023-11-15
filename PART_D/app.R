@@ -28,6 +28,7 @@ tab_Item <- function(label, code) {
 source("mod_02_decisions.R")
 source("mod_04_boxplot.R")
 source("mod_10_display_drugs.R")
+source("mod_20_display_conditions.R")
 
 library(shinydashboard)
 library(shiny)
@@ -41,6 +42,7 @@ ui <- dashboardPage(
       menuItem("Display Decisions", tabName = "decisions", icon = icon("th")),
       menuItem("Boxplot", tabName = "boxplot", icon = icon("th")),
       menuItem("List of Drugs", tabName = "list_drugs", icon = icon("th")),
+      menuItem("List of Conditions", tabName = "list_conditions", icon = icon("th")),
       new_menuItem("experiment", tName = "jim_widget")
     )
   ),
@@ -70,6 +72,10 @@ ui <- dashboardPage(
         tabName = "list_drugs",
         p("List of Drugs ... soon or later"),
         drugs_ui("drugs"),
+      ), # end tabItem
+      tabItem(
+        tabName = "list_conditions",
+        conditions_ui("conditions"),
       ) # end tabItem
     ) # end all tabItems
   ) # end dashboardbody
@@ -80,6 +86,7 @@ server <- function(input, output) {
   decisions_server("decisions")
   boxplot_server("boxplot")
   drugs_server("drugs")
+  conditions_server("conditions")
 }
 
 
