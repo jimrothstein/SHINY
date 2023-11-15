@@ -7,7 +7,6 @@ library(shiny)
 x <- fread("cms_part_d_01OCT2022_30SEPT2023_data.csv")
 y <- x[, .N, by = decision]
 
-
 # ------------------------------
 boxplot_ui <- function(id) {
     fluidPage(
