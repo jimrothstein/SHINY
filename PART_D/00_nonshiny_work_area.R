@@ -41,6 +41,18 @@ head(x, n=5)
 # -----------------------
 
 x[, .N, by= drug]
+y= x[, .N, by= .(drug, decision)] 
+head(y)
+names(y)
+
+# ---------------------
+#   ORDER by DECISION
+# ---------------------
+z  <- dcast(y, drug ~ decision, value.var = "N")
+z
+names(z) # [1] "drug"                "Favorable"           "Partially Favorable" "Unfavorable"        
+z[order(-Unfavorable),]
+
 
   names(x)
   str(x)
