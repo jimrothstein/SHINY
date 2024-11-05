@@ -32,6 +32,7 @@ res2 =derive_vars_dt(
   highest_imputation="M"
  )
 
+
 #if (interactive()) {                   #
   # table example
   shinyApp(
@@ -80,13 +81,19 @@ res2 =derive_vars_dt(
     ),
     
     server = function(input, output) {
+      
+  wrapper = function(dtc, highest_imputation){
+  res = impute_dtc_dt(dtc=dtc, highest_imputation=highest_imputation) 
+  tibble(dtc, imputed )
+  } 
+  
+res =wrapper(unlist(mhdt), highest_imputation=select ) 
+
       output$table1<- renderTable(mhdt)
       output$table2 <- renderTable(res1)
-      output$table3 <- renderTable(res2)
+      output$table3 <- renderTable(res)
       
     }
-  )
-
-
-?admiral::derive_vars_dt
-
+)
+  
+  
