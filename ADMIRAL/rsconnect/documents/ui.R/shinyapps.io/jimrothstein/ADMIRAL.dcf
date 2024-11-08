@@ -1,0 +1,12 @@
+name: ADMIRAL
+title: ADMIRAL
+username: jimrothstein
+account: jimrothstein
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 13280429
+bundleId: 9335787
+url: https://jimrothstein.shinyapps.io/ADMIRAL/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
