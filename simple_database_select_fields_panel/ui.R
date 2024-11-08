@@ -1,6 +1,7 @@
 library(shiny)
 library(ggplot2)
 
+# sidebar Panel, selectInput, mainPanel .... select from dataset
 dataset <- diamonds
 
 fluidPage(
