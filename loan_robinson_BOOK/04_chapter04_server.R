@@ -42,14 +42,3 @@ server <- function(session, input, output) {
   )
 }# end of server
 
-library(data.table)
-dt  <- as.data.table(mtcars)
-dt
-
-# compare
-dt[, c(2, 8:11)]
-typeof(dt[[2]])  #double
-
-dt2  <- dt[, c(2, 8:11)] <- lapply(dt[, c(2, 8:11)], as.character)
-dt2
-typeof(dt2[[2]])  # character

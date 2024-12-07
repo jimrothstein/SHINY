@@ -6,20 +6,22 @@
 
 library(shiny)
 library(shinydashboard)
+
+shinyApp(
 includeCSS('test.css')                 # Check this !  
-ui  <- shiny::fluidRow(
-  shinydashboard::box(width = 12, title = "A Box in a Fluid Row I want to Split", 
-                      background="light-blue", # do not see it
-      splitLayout(
-        textInput("inputA", "The first input"),
-        textInput("inputB", "The second input"),
-        textInput("inputC", "The third input")
-      )
+  ui  <- shiny::fluidRow(
+    shinydashboard::box(width = 12, title = "A Box in a Fluid Row I want to Split", 
+                        background="light-blue", # do not see it
+        splitLayout(
+          textInput("inputA", "The first input"),
+          textInput("inputB", "The second input"),
+          textInput("inputC", "The third input")
+        )
+    )
   )
+
+  server  <- function(input, output    ){}
 )
-
-server  <- function(input, output    ){}
-
 
 shinyApp(ui, server)
 

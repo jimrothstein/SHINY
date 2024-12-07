@@ -1,3 +1,4 @@
+# non-interactive;   To Run in Rstudio
 library(shiny)
 library(ggplot2)
 library(admiral)
@@ -112,4 +113,5 @@ if (F){
 ?admiral::derive_vars_dt
 ) # end App 
 } # end if 
+
 shinyApp(ui,server)
