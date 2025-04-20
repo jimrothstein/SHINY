@@ -24,7 +24,7 @@ server <- function(input, output) {
     # Take a dependency on input$goButton
     input$goButton
     
-    # Use isolate() to avoid dependency on input$obs
+    # Use isolate() to READ but avoid dependency on input$obs
     dist <- isolate(rnorm(input$obs))
     hist(dist)
   })
