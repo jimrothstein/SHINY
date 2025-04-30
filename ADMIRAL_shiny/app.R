@@ -73,6 +73,9 @@ res = reactive(impute_dtc_dtm(dtc = dataset,
 output$imputed = renderTable(res())
 } 
 
+
+shinyApp(ui,server)
+
 if (F){
   shinyApp(
     ui = fluidPage(
@@ -113,5 +116,3 @@ if (F){
 ?admiral::derive_vars_dt
 ) # end App 
 } # end if 
-
-shinyApp(ui,server)

@@ -32,8 +32,6 @@ ui  <- shiny::fluidRow(
                                       selected = "python",
                                       width = '100%')
          ),
-
-  
          (column(6,
           pickerInput("subject", "Filter by Subject / Area:", 
                             choices = subjects, 
