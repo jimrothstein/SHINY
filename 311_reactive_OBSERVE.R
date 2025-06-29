@@ -26,7 +26,7 @@ counterServer <- function(id) {
     id,
     function(input, output, session) {
       count <- reactiveVal(0) ## count is now reactive
-      observeEvent(input$button, {
+      observeEvent(input$button, {   # waits for button push
         cat("button pushed", "\n")
         count(count() + 1)
       })

@@ -5,7 +5,7 @@ library(ggplot2)
 
 # Load data --------------------------------------------------------------------
 
-load("~/code/SHINY/rstudio_movies_shiny_app/movies.RData")
+load("~/code/shiny_project/rstudio_movies_shiny_app/movies.RData")
 
 # calc ratio, outside of ui/server ---------------------------------------------
 

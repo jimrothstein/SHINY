@@ -8,3 +8,7 @@ READ:  https://posit-dev.github.io/r-shinylive/
 
 more Shinylive examples: (code)
 https://shinylive.io/r/examples/#hello-shiny
+
+READ:  Shinylive docs:
+https://posit-dev.github.io/r-shinylive/
+

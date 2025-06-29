@@ -1,3 +1,5 @@
+
+## To run shiny in the browser (ie shinylive)
 ## do_first.R
 
 
@@ -5,7 +7,7 @@
 setwd("~/code/shiny_project/shinylive")
 dir()
 
-# Copy an existing app, to directory shinylive/myapp
+# Copy an existing shiny app, to directory shinylive/myapp
 
 # Example: Copy "Hello World" from `{shiny}`
 
@@ -19,7 +21,7 @@ fs::dir_copy(path, "./myapp", overwrite = TRUE)
 shinylive::export("myapp", "site")
 
 
-# all is running inside browser
+# To preview:  all is running inside browser
 httpuv::runStaticServer("site")
 
 
