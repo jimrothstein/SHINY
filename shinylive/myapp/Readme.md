@@ -12,3 +12,6 @@ https://shinylive.io/r/examples/#hello-shiny
 READ:  Shinylive docs:
 https://posit-dev.github.io/r-shinylive/
 
+More details;  including **embed shinylive** app (ie change a plot) within a **quarto** app
+https://www.tidyverse.org/blog/2024/10/shinylive-0-8-0/
+
