@@ -3,7 +3,7 @@ title: "Old Faithful"
 format: 
   html:
     code-tools: 
-      source: https://github.com/quarto-dev/quarto-web/tree/main/docs/interactive/shiny/_examples/old-faithful/shiny-old-faithful.qmd
+      source: "https://github.com/quarto-dev/quarto-web/tree/main/docs/interactive/shiny/_examples/old-faithful/shiny-old-faithful.qmd"
 server: shiny
 ---
 <!--
