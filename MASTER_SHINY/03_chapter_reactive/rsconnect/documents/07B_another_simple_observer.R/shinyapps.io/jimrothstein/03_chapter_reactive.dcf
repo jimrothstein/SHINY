@@ -5,7 +5,7 @@ account: jimrothstein
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 15877341
-bundleId: 11088894
+bundleId: 11088906
 url: https://jimrothstein.shinyapps.io/03_chapter_reactive/
 version: 1
 asMultiple: FALSE
