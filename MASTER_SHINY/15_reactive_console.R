@@ -17,3 +17,12 @@ x(20) # sets   AND observe ran!
 x(30) #        and again
 
 reactiveConsole(FALSE)
+
+
+# 
+values <- reactiveValues(A=1)
+values
+
+obsB <- observe({
+  print(values$A + 1)
+})

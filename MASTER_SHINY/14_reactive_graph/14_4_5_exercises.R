@@ -4,6 +4,7 @@
 library(shiny)
 library(reactlog)
 reactlog::reactlog_enable()   # C-F3 to see
+# after app closes   shiny::reactlogShow()
 # --------------------------------- Slider-----------------------------------
 
 ui <- fluidPage(

@@ -1,0 +1,13 @@
+name: 03_chapter_reactive
+title: 03_chapter_reactive
+username: jimrothstein
+account: jimrothstein
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 15877341
+bundleId: 11088894
+url: https://jimrothstein.shinyapps.io/03_chapter_reactive/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: 01_UI_intro.R|03_first_reactive_example.R|03_HW_reactive_graphs.R|03_HW.R|04_t_test_regular_R.R|05_reactive_expression.R|06_reactive_expression_improved.qmd|07_simple_observer.R
