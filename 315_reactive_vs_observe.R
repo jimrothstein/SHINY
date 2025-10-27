@@ -1,6 +1,6 @@
 # 315
 # compare observeEvent vs renderText
-
+# TAGS:  shiny, observeEvent
 # reactive: 
 # any change in box "a", render Text runs (or accodring to lazy reactive)
 
