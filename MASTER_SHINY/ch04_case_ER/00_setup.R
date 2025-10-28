@@ -82,9 +82,3 @@ summary %>%
 selected %>% 
   sample_n(10) %>% 
   dplyr::pull(narrative)      # same as selected$narrative
-
-
-
-
-
-		/* vim: set filetype=r : */
