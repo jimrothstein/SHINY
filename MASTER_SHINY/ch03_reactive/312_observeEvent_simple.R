@@ -1,4 +1,5 @@
 # observeEvent
+# fires with any single change in input$name
 
 ui <- fluidPage(
   textInput("name", "What's your name?"),
