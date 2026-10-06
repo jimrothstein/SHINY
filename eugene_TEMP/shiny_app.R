@@ -1,26 +1,3 @@
-
-
-Quarto qmd file.
-
-TODO:
-          - cold-fold not working
-          - rmarkdown for horiz line not working.
-          - _quarto.yml working?
-
-PURPOSE:  This is quarto document with embedded Shiny.
-
-USAGE:    quarto serve *.qmd in zsh terminal
-          Then manually open browser to 127.0.0.1:port, where port number is in console
-
-NOTE:     HTML page automatically refreshes with code changes. 
-          Can run interactively.
----
-
-####  REF: <https://www.extremeweatherwatch.com/cities/eugene/year-1952>  \
-####  Plot:  Number of days >= 90F  (each year)
-
-```{r}
-#| echo: false
 library(data.table)
 {
 s="
@@ -92,5 +69,3 @@ if (F) {
 
 shinyApp(ui, server)
 # --------------
-
-```
