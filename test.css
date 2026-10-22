@@ -1,0 +1,14 @@
+div(
+  style = "display: grid; 
+          grid-template-columns: 20% repeat(3, 20%); ## same as repeat(4, 20%)
+          grid-gap: 10px;",
+
+    textInput("inputA", "The first input"),
+
+    textInput("inputB", "The second input"),
+
+    textInput("inputC", "The third input"),
+
+    textInput("inputD", "The fourth input")
+
+)

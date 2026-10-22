@@ -1,0 +1,94 @@
+---
+title: "Your title goes here"
+author: 
+date: 
+output:
+  html_document:
+    df_print: paged
+    toc: false
+runtime: shiny
+---
+
+
+```{r setup, include=FALSE		}
+knitr::opts_chunk$set(echo = TRUE,
+                      comment = "      ## ",
+                      error = TRUE,
+                      collapse = T   ) # T easier to read
+```
+
+```{r begin}
+
+#Load Required R Packages
+library(shiny)
+library(tidyverse)
+library(DT)
+library(lubridate)
+library(readxl)
+library(shinyWidgets)
+
+faves <- readRDS('faves.rds')
+
+langs <- c("rstats| r |rstudio|tidyverse", "python", "sql", "excel ", "tableau", "power bi")
+names(langs) <- c("R", "Python", "SQL", "Excel", "Tableau", "Power BI")
+langs <- sort(langs)
+subjects <- c("nlp", "machine learning", "shiny", "data vi", "cloud", "data mining|datamining", "web3|crypto|blockchain|nft", "statistics", "deeplearning|neuralnet|neural|artificial|tensor")
+names(subjects) <- c("Natural Language Processing", "Machine Learning", 
+                     "Shiny Dashboards", "Data Visualisation", "Cloud Computing", "Data Mining", "Web3, Blockchain, NFTs and Crypto", "Statistics", "Deep Learning, Neural Networks and AI")
+subjects <- sort(subjects)
+
+```
+```{r user_input}
+
+shiny::fluidRow(column(6, 
+											 shinyWidgets::pickerInput("lang", "Select Language / Software / Service:", 
+                            choices = langs, 
+                            options = list(`actions-box` = TRUE), 
+                            multiple = TRUE, selected = "python", width = '100%')),
+         (column(6,
+          pickerInput("subject", "Filter by Subject / Area:", 
+                            choices = subjects, 
+                            options = list(`actions-box` = TRUE), 
+                            multiple = TRUE, width = '100%'))),)
+
+```
+
+```{r reactive}
+faves_new <- reactive({
+  faves %>%
+    filter(str_detect(lower_text, str_c(input$lang, collapse = '|'))) %>%
+    filter(str_detect(lower_text, str_c(input$subject, collapse = '|'))) %>%
+    arrange(-favorite_count,-retweet_count)
+})
+```
+
+```{r rende1r}
+library(data.table)
+#renderDT({
+
+renderTable({
+  faves_new <- faves_new()
+  faves_new <- faves_new[, c(4, 19, 20, 46)]
+	as.data.table(faves_new,
+                options = list(pageLength = 5), 
+                colnames = c("Tweet Text", "#RTs", "#Faves", "Content"),
+                rownames = FALSE,
+                escape = F)  
+})
+```
+
+```{r render, eval=FALSE, include=FALSE 	} 
+
+{
+output_dir  <- Sys.getenv("OUTPUT_DIR")
+output_dir
+file <- ""
+file  <- normalizePath(c(".", file), mustWork=T)[[2]]
+file
+}
+rmarkdown::render(file,
+                  #output_format="html_document",
+                  output_format="pdf_document",
+                  output_dir=output_dir
+                  )
+```

@@ -1,0 +1,5 @@
+library(bslib)
+# bs_theme_preview(theme = bs_theme(), ..., with_themer = TRUE)
+options(shiny.autoload.r = NULL)
+bslib::bs_theme_preview()
+bs_theme_preview(theme = bs_theme(), with_themer = TRUE)

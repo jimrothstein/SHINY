@@ -1,0 +1,60 @@
+# This code was done by Shny assistant
+
+1  tab_data_ui <- function(id) {                              # module UI function definition
+2    ns <- NS(id)                                            # create namespace function
+3  
+4    tabs <- c("Upload", "Filtering", "Mapping", "Preview")  # define tab names vector
+5  
+6    tagList(                                                # container for HTML elements
+7      shinyjs::useShinyjs(),                               # enable shinyjs functionality
+8      div(                                                 # main container div
+9        class = "data-tab-container",                      # CSS class assignment
+10       div(                                               # content container div
+11         class = "data-tab-content-container",            # CSS class assignment
+12         div(                                             # content div
+13           class = "data-tab-content",                    # CSS class assignment
+14           navset_pill(                                   # create pill-style navigation
+15             id = ns("data_navset"),                      # namespaced navset ID
+16             nav_panel(                                   # first navigation panel
+17               "Upload",                                  # panel title
+18               stepper_ui("Upload", tabs),               # stepper UI component
+19               data_upload_ui(ns("raw_data"))            # namespaced upload module UI
+20             ),
+21             nav_panel(                                   # second navigation panel
+22               "Filtering",                              # panel title
+23               stepper_ui("Filtering", tabs),            # stepper UI component
+24               data_filtering_ui(ns("data_filtering"))   # namespaced filtering module UI
+25             ),
+26             nav_panel(                                   # third navigation panel
+27               "Mapping",                                # panel title
+28               stepper_ui("Mapping", tabs),              # stepper UI component
+29               data_mapping_ui(ns("column_mapping"))     # namespaced mapping module UI
+30             ),
+31             nav_panel(                                   # fourth navigation panel
+32               "Preview",                                # panel title
+33               id = ns("data_navset-review"),            # namespaced panel ID
+34               div(                                      # panel content div
+35                 stepper_ui("Preview", tabs),            # stepper UI component
+36                 div(                                    # inner content div
+37                   uiOutput(ns("processed_data_message")), # namespaced dynamic UI output
+38                   reactable_ui(ns("data_processed"))    # namespaced reactable UI
+39                 )
+40               )
+41             )
+42           )
+43         )
+44       ),
+45       div(                                               # button container div
+46         class = "data-tab-btns-container",              # CSS class assignment
+47         # Left side: Restart button
+48         actionButton(ns("restart"), "Restart"),         # namespaced restart button
+49         # Right side: Previous and Next buttons
+50         div(                                            # navigation buttons div
+51           class = "nav-btns",                           # CSS class assignment
+52           actionButton(ns("prev_step"), "Previous", disabled = TRUE), # namespaced previous button
+53           actionButton(ns("next_step"), "Next", , class = "btn-primary") # namespaced next button
+54         )
+55       )
+56     )
+57   )
+58 
