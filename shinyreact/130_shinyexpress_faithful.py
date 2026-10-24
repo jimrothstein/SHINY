@@ -1,17 +1,18 @@
-# shinyexpress_faithful.py
+# 130_shinyexpress_faithful.py
 import numpy as np
-import pandas as pd
 from shiny.express import input
 from shinyreact import reactive_output, set_react_page
 
-# Set up the page UI using shinyreact (express)
+from faithful import load_waiting, histogram
+
 set_react_page()
 
-x = pd.read_csv("faithful.csv")["waiting"].to_numpy()
+waiting = load_waiting()
 
 
 @reactive_output
 def dist_data():
-    breaks = np.linspace(x.min(), x.max(), input.bin_count() + 1)
-    counts, _ = np.histogram(x, bins=breaks)
-    return {"breaks": breaks.tolist(), "counts": counts.tolist()}
+    bins = input.bin_count()
+    if bins is None:
+        return None
+    return histogram(waiting, bins)

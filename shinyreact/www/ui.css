@@ -1,0 +1,8 @@
+.app { font-family: system-ui, sans-serif; max-width: 640px; margin: 2rem auto; padding: 0 1rem; }
+.controls { display: flex; align-items: center; gap: 1rem; margin: 1rem 0; }
+.controls input[type="range"] { flex: 1; }
+.chart.recalculating { opacity: .6; transition: opacity 200ms; }
+.skeleton { padding: 2rem; text-align: center; color: #888; }
+.shiny-output-error { color: #b00020; padding: 1rem; border: 1px solid #b00020; border-radius: 4px; }
+.app.busy::before { content: ""; display: block; height: 3px; background: #4682b4; animation: pulse 1s infinite; }
+@keyframes pulse { 0% { opacity: .3; } 50% { opacity: 1; } 100% { opacity: .3; } }
