@@ -1,8 +1,8 @@
-# 14O_decision_tree.py
+# 140_decision_tree.py
 # USAGE:
 # cd <this dir>
 # source .venv/bin/activate
-# python 14O_decision_tree.py
+# python 140_decision_tree.py
 
 import pandas as pd
 from sklearn.datasets import load_iris
