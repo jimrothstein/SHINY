@@ -1,4 +1,5 @@
 # 130_shinyexpress_faithful.py
+# UI is written by LLM and in js. Done for me!
 import numpy as np
 from shiny.express import input
 from shinyreact import reactive_output, set_react_page
