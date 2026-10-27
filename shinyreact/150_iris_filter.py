@@ -71,7 +71,7 @@ for r in df:
 COLUMNS = FEATURE_COLUMNS + ["species"]
 
 
-def _records(rows, limit=10):
+def _records(rows, limit=5):
     out = []
     for r in rows[:limit]:
         out.append({k: r[k] for k in COLUMNS})

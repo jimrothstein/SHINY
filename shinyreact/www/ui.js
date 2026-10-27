@@ -33,8 +33,8 @@ function App() {
   return h(
     "div",
     { className: "app" },
-    h("h2", null, "Iris dataset — first 10 rows"),
-    iris ? h(Table, { rows: iris.rows }) : h("p", null, "Loading…"),
+    h("h2", null, "Iris dataset — first 5 rows"),
+    iris ? h("div", { className: "table-scroll" }, h(Table, { rows: iris.rows })) : h("p", null, "Loading…"),
     h("h2", null, "Filter criteria"),
     h("input", {
       type: "text",
@@ -43,13 +43,13 @@ function App() {
       placeholder: "e.g. sepal_length > 4.6",
       style: { width: "100%", padding: "0.4rem" },
     }),
-    h("h2", null, "Matching rows — first 10"),
+    h("h2", null, "Matching rows — first 5"),
     error
       ? h("div", { className: "shiny-output-error" }, error.message)
       : (filtered
           ? h("div", { className: status === "recalculating" ? "table recalculating" : "table" },
               h("p", null, `matched: ${filtered.n}`),
-              h(Table, { rows: filtered.rows }))
+              h("div", { className: "table-scroll" }, h(Table, { rows: filtered.rows })))
           : h("p", null, "Loading…")),
   );
 }

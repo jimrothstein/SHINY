@@ -13,7 +13,7 @@ def test_iris_first_10(local_server):
     out = local_server.get_output("iris_data")
     assert out.status == "ok"
     val = out.value
-    assert len(val["rows"]) == 10
+    assert len(val["rows"]) == 5
     assert val["n"] == 150
     assert val["rows"][0]["species"] in ("setosa", "versicolor", "virginica")
 
@@ -23,7 +23,7 @@ def test_filtered_default_criteria(local_server):
     out = local_server.get_output("filtered_data")
     assert out.status == "ok"
     val = out.value
-    assert len(val["rows"]) == 10
+    assert len(val["rows"]) == 5
     assert val["n"] > 10
     assert all(r["sepal_length"] > 4.6 for r in val["rows"])
 
@@ -33,7 +33,7 @@ def test_filtered_empty_criteria(local_server):
     out = local_server.get_output("filtered_data")
     assert out.status == "ok"
     assert out.value["n"] == 150
-    assert len(out.value["rows"]) == 10
+    assert len(out.value["rows"]) == 5
 
 
 def test_filtered_invalid_criteria(local_server):

@@ -3,5 +3,6 @@
 .data-table th, .data-table td { border: 1px solid #ccc; padding: 4px 8px; text-align: left; }
 .data-table th { background: #f2f2f2; }
 .table.recalculating { opacity: .6; transition: opacity 200ms; }
+.table-scroll { max-height: 180px; overflow-y: auto; border: 1px solid #ddd; margin: 0.5rem 0 1.5rem; }
 .empty { color: #888; }
 .shiny-output-error { color: #b00020; padding: 1rem; border: 1px solid #b00020; border-radius: 4px; }
