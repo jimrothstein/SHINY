@@ -1,84 +1,56 @@
 const { React, ReactDOM, useShinyInput, useShinyOutputValue,
-        useShinyOutputStatus, useShinyOutputError, useShinyInitialized,
-        useShinyBusy } = window.shinyreact;
+        useShinyOutputStatus, useShinyOutputError, useShinyInitialized } =
+  window.shinyreact;
 const h = React.createElement;
 
-function Histogram({ data }) {
-  const breaks = data.breaks;
-  const counts = data.counts;
-  const n = counts.length;
-  const min = breaks[0];
-  const max = breaks[breaks.length - 1];
-  const maxCount = Math.max(1, ...counts);
-  const W = 560;
-  const H = 260;
-  const padL = 36;
-  const padB = 28;
-  const plotW = W - padL - 8;
-  const plotH = H - padB - 8;
-  const barW = plotW / n;
-
+function Table({ rows }) {
+  if (!rows || rows.length === 0) {
+    return h("p", { className: "empty" }, "No rows");
+  }
+  const cols = Object.keys(rows[0]);
   return h(
-    "svg",
-    { viewBox: `0 0 ${W} ${H}`, width: "100%", height: "auto", role: "img",
-      "aria-label": "Histogram of waiting times" },
-    // bars
-    ...counts.map((c, i) => {
-      const bh = (c / maxCount) * plotH;
-      return h("rect", {
-        key: i,
-        x: padL + i * barW + 1,
-        y: 8 + (plotH - bh),
-        width: Math.max(1, barW - 2),
-        height: bh,
-        fill: "#4682b4",
-      });
-    }),
-    // baseline
-    h("line", { x1: padL, y1: 8 + plotH, x2: padL + plotW, y2: 8 + plotH,
-      stroke: "#333", strokeWidth: 1 }),
-    // x labels min/max
-    h("text", { x: padL, y: H - 6, fontSize: 11, fill: "#555" },
-      Math.round(min)),
-    h("text", { x: padL + plotW, y: H - 6, fontSize: 11, fill: "#555",
-      textAnchor: "end" }, Math.round(max)),
-    h("text", { x: padL, y: 12, fontSize: 11, fill: "#555" }, maxCount),
+    "table",
+    { className: "data-table" },
+    h("thead", null,
+      h("tr", null, cols.map((c) => h("th", { key: c }, c)))),
+    h("tbody", null,
+      rows.map((r, i) =>
+        h("tr", { key: i },
+          cols.map((c) => h("td", { key: c }, String(r[c])))))),
   );
 }
 
 function App() {
   const initialized = useShinyInitialized();
-  const busy = useShinyBusy();
-  const [bins, setBins] = useShinyInput("bin_count", 9);
-  const data = useShinyOutputValue("dist_data", null);
-  const status = useShinyOutputStatus("dist_data");
-  const error = useShinyOutputError("dist_data");
+  const [criteria, setCriteria] = useShinyInput("criteria", "sepal_length > 4.6");
+  const iris = useShinyOutputValue("iris_data", null);
+  const filtered = useShinyOutputValue("filtered_data", null);
+  const status = useShinyOutputStatus("filtered_data");
+  const error = useShinyOutputError("filtered_data");
 
   if (!initialized) return null;
 
-  const recalculating = status === "recalculating";
-
   return h(
     "div",
-    { className: busy ? "app busy" : "app" },
-    h("h2", null, "Old Faithful — waiting times"),
-    h("div", { className: "controls" },
-      h("label", { htmlFor: "bins" }, "Bins: ", bins),
-      h("input", {
-        id: "bins",
-        type: "range",
-        min: 1,
-        max: 50,
-        value: bins,
-        onChange: (e) => setBins(Number(e.target.value)),
-      }),
-    ),
+    { className: "app" },
+    h("h2", null, "Iris dataset — first 10 rows"),
+    iris ? h(Table, { rows: iris.rows }) : h("p", null, "Loading…"),
+    h("h2", null, "Filter criteria"),
+    h("input", {
+      type: "text",
+      value: criteria,
+      onChange: (e) => setCriteria(e.target.value),
+      placeholder: "e.g. sepal_length > 4.6",
+      style: { width: "100%", padding: "0.4rem" },
+    }),
+    h("h2", null, "Matching rows — first 10"),
     error
       ? h("div", { className: "shiny-output-error" }, error.message)
-      : (data
-          ? h("div", { className: recalculating ? "chart recalculating" : "chart" },
-              h(Histogram, { data }))
-          : h("div", { className: "skeleton" }, "Loading…")),
+      : (filtered
+          ? h("div", { className: status === "recalculating" ? "table recalculating" : "table" },
+              h("p", null, `matched: ${filtered.n}`),
+              h(Table, { rows: filtered.rows }))
+          : h("p", null, "Loading…")),
   );
 }
 
