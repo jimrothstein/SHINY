@@ -7,8 +7,44 @@
 # UI: www/ui.js (no-build). Displays first 10 rows of iris and rows matching
 # a user-entered criteria (e.g. "sepal length > 4.6").
 
+import sys
+
+# --- keep heavy (C-extension) modules alive across shiny test_server reloads --
+# shiny's test_server purges every module whose __file__ lives under the app
+# dir. Because .venv sits inside the project dir, numpy/pandas/sklearn get
+# purged and their C extensions cannot be re-imported in the same process.
+# Cache them in `builtins` (which survives purging) and restore before import.
+import builtins as _builtins
+
+_HEAVY_PREFIXES = ("numpy", "pandas", "sklearn", "scipy", "joblib", "threadpoolctl")
+
+
+def _restore_heavy():
+    cache = getattr(_builtins, "_heavy_mod_cache", None)
+    if not cache:
+        return
+    for k, v in cache.items():
+        if k not in sys.modules:
+            sys.modules[k] = v
+
+
+def _cache_heavy():
+    cache = {}
+    for k, v in list(sys.modules.items()):
+        if any(k == p or k.startswith(p + ".") for p in _HEAVY_PREFIXES):
+            cache[k] = v
+    _builtins._heavy_mod_cache = cache
+
+
+_restore_heavy()
+
 import re
 from pathlib import Path
+
+import pandas as pd
+from sklearn.datasets import load_iris
+
+_cache_heavy()
 
 from shiny import reactive
 from shiny.express import input
@@ -17,172 +53,22 @@ from shinyreact import reactive_output, set_react_page
 
 set_react_page()
 
-# --- data (embedded so the app is self-contained) -----------------------
+# --- data (loaded from scikit-learn via pandas) -----------------------------
 
-IRIS_ROWS = [
-    (5.1, 3.5, 1.4, 0.2, 'setosa'),
-    (4.9, 3.0, 1.4, 0.2, 'setosa'),
-    (4.7, 3.2, 1.3, 0.2, 'setosa'),
-    (4.6, 3.1, 1.5, 0.2, 'setosa'),
-    (5.0, 3.6, 1.4, 0.2, 'setosa'),
-    (5.4, 3.9, 1.7, 0.4, 'setosa'),
-    (4.6, 3.4, 1.4, 0.3, 'setosa'),
-    (5.0, 3.4, 1.5, 0.2, 'setosa'),
-    (4.4, 2.9, 1.4, 0.2, 'setosa'),
-    (4.9, 3.1, 1.5, 0.1, 'setosa'),
-    (5.4, 3.7, 1.5, 0.2, 'setosa'),
-    (4.8, 3.4, 1.6, 0.2, 'setosa'),
-    (4.8, 3.0, 1.4, 0.1, 'setosa'),
-    (4.3, 3.0, 1.1, 0.1, 'setosa'),
-    (5.8, 4.0, 1.2, 0.2, 'setosa'),
-    (5.7, 4.4, 1.5, 0.4, 'setosa'),
-    (5.4, 3.9, 1.3, 0.4, 'setosa'),
-    (5.1, 3.5, 1.4, 0.3, 'setosa'),
-    (5.7, 3.8, 1.7, 0.3, 'setosa'),
-    (5.1, 3.8, 1.5, 0.3, 'setosa'),
-    (5.4, 3.4, 1.7, 0.2, 'setosa'),
-    (5.1, 3.7, 1.5, 0.4, 'setosa'),
-    (4.6, 3.6, 1.0, 0.2, 'setosa'),
-    (5.1, 3.3, 1.7, 0.5, 'setosa'),
-    (4.8, 3.4, 1.9, 0.2, 'setosa'),
-    (5.0, 3.0, 1.6, 0.2, 'setosa'),
-    (5.0, 3.4, 1.6, 0.4, 'setosa'),
-    (5.2, 3.5, 1.5, 0.2, 'setosa'),
-    (5.2, 3.4, 1.4, 0.2, 'setosa'),
-    (4.7, 3.2, 1.6, 0.2, 'setosa'),
-    (4.8, 3.1, 1.6, 0.2, 'setosa'),
-    (5.4, 3.4, 1.5, 0.4, 'setosa'),
-    (5.2, 4.1, 1.5, 0.1, 'setosa'),
-    (5.5, 4.2, 1.4, 0.2, 'setosa'),
-    (4.9, 3.1, 1.5, 0.2, 'setosa'),
-    (5.0, 3.2, 1.2, 0.2, 'setosa'),
-    (5.5, 3.5, 1.3, 0.2, 'setosa'),
-    (4.9, 3.6, 1.4, 0.1, 'setosa'),
-    (4.4, 3.0, 1.3, 0.2, 'setosa'),
-    (5.1, 3.4, 1.5, 0.2, 'setosa'),
-    (5.0, 3.5, 1.3, 0.3, 'setosa'),
-    (4.5, 2.3, 1.3, 0.3, 'setosa'),
-    (4.4, 3.2, 1.3, 0.2, 'setosa'),
-    (5.0, 3.5, 1.6, 0.6, 'setosa'),
-    (5.1, 3.8, 1.9, 0.4, 'setosa'),
-    (4.8, 3.0, 1.4, 0.3, 'setosa'),
-    (5.1, 3.8, 1.6, 0.2, 'setosa'),
-    (4.6, 3.2, 1.4, 0.2, 'setosa'),
-    (5.3, 3.7, 1.5, 0.2, 'setosa'),
-    (5.0, 3.3, 1.4, 0.2, 'setosa'),
-    (7.0, 3.2, 4.7, 1.4, 'versicolor'),
-    (6.4, 3.2, 4.5, 1.5, 'versicolor'),
-    (6.9, 3.1, 4.9, 1.5, 'versicolor'),
-    (5.5, 2.3, 4.0, 1.3, 'versicolor'),
-    (6.5, 2.8, 4.6, 1.5, 'versicolor'),
-    (5.7, 2.8, 4.5, 1.3, 'versicolor'),
-    (6.3, 3.3, 4.7, 1.6, 'versicolor'),
-    (4.9, 2.4, 3.3, 1.0, 'versicolor'),
-    (6.6, 2.9, 4.6, 1.3, 'versicolor'),
-    (5.2, 2.7, 3.9, 1.4, 'versicolor'),
-    (5.0, 2.0, 3.5, 1.0, 'versicolor'),
-    (5.9, 3.0, 4.2, 1.5, 'versicolor'),
-    (6.0, 2.2, 4.0, 1.0, 'versicolor'),
-    (6.1, 2.9, 4.7, 1.4, 'versicolor'),
-    (5.6, 2.9, 3.6, 1.3, 'versicolor'),
-    (6.7, 3.1, 4.4, 1.4, 'versicolor'),
-    (5.6, 3.0, 4.5, 1.5, 'versicolor'),
-    (5.8, 2.7, 4.1, 1.0, 'versicolor'),
-    (6.2, 2.2, 4.5, 1.5, 'versicolor'),
-    (5.6, 2.5, 3.9, 1.1, 'versicolor'),
-    (5.9, 3.2, 4.8, 1.8, 'versicolor'),
-    (6.1, 2.8, 4.0, 1.3, 'versicolor'),
-    (6.3, 2.5, 4.9, 1.5, 'versicolor'),
-    (6.1, 2.8, 4.7, 1.2, 'versicolor'),
-    (6.4, 2.9, 4.3, 1.3, 'versicolor'),
-    (6.6, 3.0, 4.4, 1.4, 'versicolor'),
-    (6.8, 2.8, 4.8, 1.4, 'versicolor'),
-    (6.7, 3.0, 5.0, 1.7, 'versicolor'),
-    (6.0, 2.9, 4.5, 1.5, 'versicolor'),
-    (5.7, 2.6, 3.5, 1.0, 'versicolor'),
-    (5.5, 2.4, 3.8, 1.1, 'versicolor'),
-    (5.5, 2.4, 3.7, 1.0, 'versicolor'),
-    (5.8, 2.7, 3.9, 1.2, 'versicolor'),
-    (6.0, 2.7, 5.1, 1.6, 'versicolor'),
-    (5.4, 3.0, 4.5, 1.5, 'versicolor'),
-    (6.0, 3.4, 4.5, 1.6, 'versicolor'),
-    (6.7, 3.1, 4.7, 1.5, 'versicolor'),
-    (6.3, 2.3, 4.4, 1.3, 'versicolor'),
-    (5.6, 3.0, 4.1, 1.3, 'versicolor'),
-    (5.5, 2.5, 4.0, 1.3, 'versicolor'),
-    (5.5, 2.6, 4.4, 1.2, 'versicolor'),
-    (6.1, 3.0, 4.6, 1.4, 'versicolor'),
-    (5.8, 2.6, 4.0, 1.2, 'versicolor'),
-    (5.0, 2.3, 3.3, 1.0, 'versicolor'),
-    (5.6, 2.7, 4.2, 1.3, 'versicolor'),
-    (5.7, 3.0, 4.2, 1.2, 'versicolor'),
-    (5.7, 2.9, 4.2, 1.3, 'versicolor'),
-    (6.2, 2.9, 4.3, 1.3, 'versicolor'),
-    (5.1, 2.5, 3.0, 1.1, 'versicolor'),
-    (5.7, 2.8, 4.1, 1.3, 'versicolor'),
-    (6.3, 3.3, 6.0, 2.5, 'virginica'),
-    (5.8, 2.7, 5.1, 1.9, 'virginica'),
-    (7.1, 3.0, 5.9, 2.1, 'virginica'),
-    (6.3, 2.9, 5.6, 1.8, 'virginica'),
-    (6.5, 3.0, 5.8, 2.2, 'virginica'),
-    (7.6, 3.0, 6.6, 2.1, 'virginica'),
-    (4.9, 2.5, 4.5, 1.7, 'virginica'),
-    (7.3, 2.9, 6.3, 1.8, 'virginica'),
-    (6.7, 2.5, 5.8, 1.8, 'virginica'),
-    (7.2, 3.6, 6.1, 2.5, 'virginica'),
-    (6.5, 3.2, 5.1, 2.0, 'virginica'),
-    (6.4, 2.7, 5.3, 1.9, 'virginica'),
-    (6.8, 3.0, 5.5, 2.1, 'virginica'),
-    (5.7, 2.5, 5.0, 2.0, 'virginica'),
-    (5.8, 2.8, 5.1, 2.4, 'virginica'),
-    (6.4, 3.2, 5.3, 2.3, 'virginica'),
-    (6.5, 3.0, 5.5, 1.8, 'virginica'),
-    (7.7, 3.8, 6.7, 2.2, 'virginica'),
-    (7.7, 2.6, 6.9, 2.3, 'virginica'),
-    (6.0, 2.2, 5.0, 1.5, 'virginica'),
-    (6.9, 3.2, 5.7, 2.3, 'virginica'),
-    (5.6, 2.8, 4.9, 2.0, 'virginica'),
-    (7.7, 2.8, 6.7, 2.0, 'virginica'),
-    (6.3, 2.7, 4.9, 1.8, 'virginica'),
-    (6.7, 3.3, 5.7, 2.1, 'virginica'),
-    (7.2, 3.2, 6.0, 1.8, 'virginica'),
-    (6.2, 2.8, 4.8, 1.8, 'virginica'),
-    (6.1, 3.0, 4.9, 1.8, 'virginica'),
-    (6.4, 2.8, 5.6, 2.1, 'virginica'),
-    (7.2, 3.0, 5.8, 1.6, 'virginica'),
-    (7.4, 2.8, 6.1, 1.9, 'virginica'),
-    (7.9, 3.8, 6.4, 2.0, 'virginica'),
-    (6.4, 2.8, 5.6, 2.2, 'virginica'),
-    (6.3, 2.8, 5.1, 1.5, 'virginica'),
-    (6.1, 2.6, 5.6, 1.4, 'virginica'),
-    (7.7, 3.0, 6.1, 2.3, 'virginica'),
-    (6.3, 3.4, 5.6, 2.4, 'virginica'),
-    (6.4, 3.1, 5.5, 1.8, 'virginica'),
-    (6.0, 3.0, 4.8, 1.8, 'virginica'),
-    (6.9, 3.1, 5.4, 2.1, 'virginica'),
-    (6.7, 3.1, 5.6, 2.4, 'virginica'),
-    (6.9, 3.1, 5.1, 2.3, 'virginica'),
-    (5.8, 2.7, 5.1, 1.9, 'virginica'),
-    (6.8, 3.2, 5.9, 2.3, 'virginica'),
-    (6.7, 3.3, 5.7, 2.5, 'virginica'),
-    (6.7, 3.0, 5.2, 2.3, 'virginica'),
-    (6.3, 2.5, 5.0, 1.9, 'virginica'),
-    (6.5, 3.0, 5.2, 2.0, 'virginica'),
-    (6.2, 3.4, 5.4, 2.3, 'virginica'),
-    (5.9, 3.0, 5.1, 1.8, 'virginica'),
-]
+_iris = load_iris()
 
-df = []
-for sl, sw, pl, pw, sp in IRIS_ROWS:
-    df.append({
-        "sepal_length": float(sl),
-        "sepal_width": float(sw),
-        "petal_length": float(pl),
-        "petal_width": float(pw),
-        "species": str(sp),
-    })
+def _normalize_col(name):
+    return name.lower().replace("(cm)", "").strip().replace(" ", "_")
 
-COLUMNS = ["sepal_length", "sepal_width", "petal_length", "petal_width", "species"]
+FEATURE_COLUMNS = [_normalize_col(n) for n in _iris.feature_names]
+_iris_df = pd.DataFrame(_iris.data, columns=FEATURE_COLUMNS)
+_iris_df["species"] = [_iris.target_names[t] for t in _iris.target]
+
+df = _iris_df.to_dict("records")
+for r in df:
+    r["species"] = str(r["species"])
+
+COLUMNS = FEATURE_COLUMNS + ["species"]
 
 
 def _records(rows, limit=10):
