@@ -1,0 +1,1 @@
+/home/jim/dotfiles/opencode/projects/shiny_project.md

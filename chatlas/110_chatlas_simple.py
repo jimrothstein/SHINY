@@ -15,3 +15,5 @@ chat.register_tool(get_current_weather)
 # Send user prompt to the model for a response.
 chat.chat("What is the capital of France?")
 chat.chat("How's the weather in San Francisco?")
+
+chat.chat("Teach me two things about 'chatlas' ")

@@ -1,0 +1,13 @@
+[project]
+name = "chatlas_shiny"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "chatlas>=0.23.0",
+    "iprogress==0.4",
+    "numpy>=2.5.4",
+    "raghilda==0.2.1",
+    "sentence-transformers>=6.3.0",
+]
